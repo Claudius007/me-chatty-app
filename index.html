@@ -1,85 +1,103 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>ChatIO</title>
-    <style>
-      body {
-        background: #f9f9f9;
-      }
 
-      #container {
-        widows: 700px;
-        margin: 0 auto;
-      }
+<head>
+  <title>ChatIO</title>
+  <style>
+    body {
+      background: #f9f9f9;
+    }
 
-      #chatWindow {
-        height: 300px;
-      }
+    #container {
+      widows: 700px;
+      margin: 0 auto;
+    }
 
-      #mainWrapper {
-        display: none;
-      }
+    #chatWindow {
+      height: 300px;
+    }
 
-      #chatWrapper {
-        float: left;
-        border: 1px #ccc solid;
-        border-radius: 10px;
-        background: #f4f4f4;
-        padding: 10px;
-      }
+    #mainWrapper {}
 
-      #userWrapper {
-        float: left;
-        border: 1px #ccc solid;
-        border-radius: 10px;
-        background: #f4f4f4;
-        padding: 10px;
-        margin-left: 20px;
-        width: 150 px;
-        max-height: 200px;
-      }
+    #chatWrapper {
+      float: left;
+      border: 1px #ccc solid;
+      border-radius: 10px;
+      background: #f4f4f4;
+      padding: 10px;
+    }
 
-      #namesWrapper {
-        float: left;
-        border: 1px #ccc solid;
-        border-radius: 10px;
-        background: #f4f4f4;
-        padding: 10px;
-        margin-left: 20px;
-      }
+    #userWrapper {
+      float: left;
+      border: 1px #ccc solid;
+      border-radius: 10px;
+      background: #f4f4f4;
+      padding: 10px;
+      margin-left: 20px;
+      width: 150 px;
+      max-height: 200px;
+    }
 
-      input {
-        height: 30px;
-        border: 1px #ccc solid;
-      }
-    </style>
-  </head>
+    #namesWrapper {
+      display: none;
+      float: left;
+      border: 1px #ccc solid;
+      border-radius: 10px;
+      background: #f4f4f4;
+      padding: 10px;
+      margin-left: 20px;
+    }
 
-  <body>
-    <div id="container">
-      <div id="namesWrapper">
-        <h2>ChatIO</h2>
-        <form id="usernameForm">
-          <input type="text" size="35" id="username" />
-          <input type="submit" value="Submit" />
-        </form>
-      </div>
-    </div>
+    input {
+      height: 30px;
+      border: 1px #ccc solid;
+    }
+  </style>
+</head>
 
-    <div id="mainWrapper">
+<body>
+  <div id="container">
+    <div id="namesWrapper">
       <h2>ChatIO</h2>
-      <div id="chatWrapper">
-        <div id="chatWindow"></div>
-        <form id="messageForm">
-          <input
-            type="text"
-            size="35"
-            id="message"
-            placeholder="Say something..."
-          />
-          <input type="submit" value="Submit" />
-        </form>
-      </div>
+      <form id="usernameForm">
+        <input type="text" size="35" id="username" />
+        <input type="submit" value="Submit" />
+      </form>
     </div>
-  </body>
+  </div>
+
+  <div id="mainWrapper">
+    <h2>ChatIO</h2>
+    <div id="chatWrapper">
+      <div id="chatWindow"></div>
+      <form id="messageForm">
+        <input type="text" size="35" id="message" placeholder="Say something..." />
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+  </div>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+  <script>
+    $(function () {
+      var socket = io.connect();
+      var $messageForm = $('#messageForm');
+      var $message = $('#message');
+      var $chat = $('#chatWindow');
+
+      $messageForm.submit(function (e) {
+        e.preventDefault();
+        socket.emit('send message', $message.val());
+        $message.val('');
+      });
+
+      socket.on('new message', function (data) {
+        $chat.append(data.msg + '<br>');
+      });
+
+    });
+  </script>
+</body>
+</body>
+
 </html>
