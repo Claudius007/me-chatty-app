@@ -1,11 +1,11 @@
-var express = require("express"),
-  app = express(),
-  server = require("http").createServer(app),
+var app = require("express")();
+//app = express(),
+var server = require("http").createServer(app),
   io = require("socket.io").listen(server);
 
 //port
 var port = process.env.PORT || 3000;
-app.listen(port);
+server.listen(port);
 console.log("Server running..." + port);
 
 //page routing
