@@ -17,7 +17,9 @@
       height: 300px;
     }
 
-    #mainWrapper {}
+    #mainWrapper {
+      display: none;
+    }
 
     #chatWrapper {
       float: left;
@@ -39,7 +41,7 @@
     }
 
     #namesWrapper {
-      display: none;
+
       float: left;
       border: 1px #ccc solid;
       border-radius: 10px;
@@ -80,12 +82,28 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     $(function () {
-     
+
       //const socket = io();
       var socket = io.connect();
       var $messageForm = $('#messageForm');
       var $message = $('#message');
       var $chat = $('#chatWindow');
+      var $usernameForm = $('#usernameForm');
+      var $user = $('#user');
+      var $userName = $('#userName');
+      var $error = $('#error');
+
+      $usernaForm.submit(function (e) {
+        e.preventDefault();
+        socket.emit('add user', $username.val(), function (data) {
+          if (data) {
+            $('#namesWrapper').hide();
+            $('#mainWrapper').show();
+          }
+          else { }
+        });
+        $message.val('');
+      });
 
       $messageForm.submit(function (e) {
         e.preventDefault();
