@@ -3,7 +3,7 @@ var app = require("express")();
 var server = require("http").createServer(app),
   io = require("socket.io").listen(server);
 
-  usernames = [];
+usernames = [];
 
 //port
 var port = process.env.PORT || 3000;
@@ -29,19 +29,18 @@ io.sockets.on('connection', function (socket) {
       usernames.push(socket.username)
       updateUsernames()
     }
-    
-    //function to update usernames 
-    // this function is responsible for displaying usernames on the sidebar
-    function updateUsernames() {
-      io.sockets.emit('usernames', usernames)
-    }
   });
+  //function to update usernames 
+  // this function is responsible for displaying usernames on the sidebar
+  function updateUsernames() {
+    io.sockets.emit('usernames', usernames)
+  }
   // Send Message
   socket.on('send message', function (data) {
     io.sockets.emit('new message', {
       msg: data
     });
-  
+
   });
   // function to handle disconnect event
   socket.on('disconnect', function (data) {
@@ -50,5 +49,5 @@ io.sockets.on('connection', function (socket) {
     }
     usernames.splice(usernames.indexOf(socket.username), 1);
     updateUsernames();
-  }); 
+  });
 });
