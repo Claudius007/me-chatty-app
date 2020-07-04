@@ -68,7 +68,7 @@
       </form>
     </div>
     <div id="mainWrapper">
-      <h2>ChatIO</h2>
+      <h2>the council meeting</h2>
       <div id="chatWrapper">
         <div id="chatWindow"></div>
         <form id="messageForm">
@@ -124,7 +124,7 @@
       });
 
       socket.on('new message', function (data) {
-        $chat.append(data.msg + '<br>');
+        $chat.append('<strong>' + data.user + ': ' + '</strong>' + data.msg + '<br>');
       });
 
     });
